@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎄 Адвент-календарь для подруг 🎁</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🎁 Наш Адвент-календарь заданий 🎁</h1>
+        <p>Нажимайте на окошечко соответствующего дня (с 8 по 31 декабря), чтобы открыть задание!</p>
+    </header>
+
+    <div class="calendar-grid">
+        <button class="calendar-day" data-day="8">8</button>
+        <button class="calendar-day" data-day="9">9</button>
+        <button class="calendar-day" data-day="10">10</button>
+        <button class="calendar-day" data-day="11">11</button>
+        <button class="calendar-day" data-day="12">12</button>
+        <button class="calendar-day" data-day="13">13</button>
+
+        <button class="calendar-day" data-day="14">14</button>
+        <button class="calendar-day" data-day="15">15</button>
+        <button class="calendar-day" data-day="16">16</button>
+        <button class="calendar-day" data-day="17">17</button>
+        <button class="calendar-day" data-day="18">18</button>
+        <button class="calendar-day" data-day="19">19</button>
+
+        <button class="calendar-day" data-day="20">20</button>
+        <button class="calendar-day" data-day="21">21</button>
+        <button class="calendar-day" data-day="22">22</button>
+        <button class="calendar-day" data-day="23">23</button>
+        <button class="calendar-day" data-day="24">24</button>
+        <button class="calendar-day" data-day="25">25</button>
+
+        <button class="calendar-day" data-day="26">26</button>
+        <button class="calendar-day" data-day="27">27</button>
+        <button class="calendar-day" data-day="28">28</button>
+        <button class="calendar-day" data-day="29">29</button>
+        <button class="calendar-day" data-day="30">30</button>
+        <button class="calendar-day" data-day="31">31</button>
+    </div>
+
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            
+            <div id="modal-task"></div> 
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
