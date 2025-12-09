@@ -100,24 +100,26 @@ const tasks = {
     }
 };
 
+const FIRST_DAY = 8;
+const LAST_DAY = 31;
+const TOTAL_DAYS = LAST_DAY - FIRST_DAY + 1;
+
 // ========== ЭФФЕКТ ПАДАЮЩЕГО СНЕГА ==========
 function createSnowflakes() {
     const snowContainer = document.createElement('div');
     snowContainer.className = 'snow-container';
     document.body.appendChild(snowContainer);
 
-    // Создаем 50 снежинок
     for (let i = 0; i < 50; i++) {
         const snowflake = document.createElement('div');
         snowflake.className = 'snowflake';
         snowflake.innerHTML = '❄';
         
-        // Случайные параметры для каждой снежинки
-        const size = Math.random() * 0.8 + 0.5; // от 0.5 до 1.3em
-        const startPosition = Math.random() * 100; // от 0 до 100%
-        const animationDuration = Math.random() * 10 + 10; // от 10 до 20 секунд
-        const animationDelay = Math.random() * 5; // задержка до 5 секунд
-        const opacity = Math.random() * 0.5 + 0.3; // от 0.3 до 0.8
+        const size = Math.random() * 0.8 + 0.5;
+        const startPosition = Math.random() * 100;
+        const animationDuration = Math.random() * 10 + 10;
+        const animationDelay = Math.random() * 5;
+        const opacity = Math.random() * 0.5 + 0.3;
         
         snowflake.style.cssText = `
             left: ${startPosition}%;
@@ -139,14 +141,13 @@ function createChristmasLights() {
 
     const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff', '#ff00ff', '#00ffff'];
     
-    // Создаем 20 лампочек
     for (let i = 0; i < 20; i++) {
         const light = document.createElement('div');
         light.className = 'light';
         
         const color = colors[i % colors.length];
-        const position = (i / 20) * 100; // равномерно распределяем
-        const animationDelay = Math.random() * 2; // случайная задержка
+        const position = (i / 20) * 100;
+        const animationDelay = Math.random() * 2;
         
         light.style.cssText = `
             left: ${position}%;
@@ -159,9 +160,64 @@ function createChristmasLights() {
     }
 }
 
+// ========== ПРОГРЕСС-БАР И ЗАМОЧКИ ==========
+function initProgress(calendarDays) {
+    const progressText = document.getElementById('progress-text');
+    const progressPercent = document.getElementById('progress-percent');
+    const progressFill = document.getElementById('progress-fill');
+
+    const openedDays = new Set(JSON.parse(localStorage.getItem('openedDays') || '[]'));
+
+    const updateProgressUI = () => {
+        const openedCount = openedDays.size;
+        const percent = Math.round((openedCount / TOTAL_DAYS) * 100);
+
+        if (progressText) {
+            progressText.textContent = `Открыто дней: ${openedCount} из ${TOTAL_DAYS}`;
+        }
+        if (progressPercent) {
+            progressPercent.textContent = `${percent}%`;
+        }
+        if (progressFill) {
+            progressFill.style.width = `${percent}%`;
+        }
+    };
+
+    const updateDayLockState = () => {
+        const now = new Date();
+        const currentDay = now.getDate();
+        const currentMonth = now.getMonth() + 1;
+
+        calendarDays.forEach(button => {
+            const day = parseInt(button.getAttribute('data-day'));
+            const isAvailable = currentMonth === 12 && day >= FIRST_DAY && day <= currentDay;
+            const isOpened = openedDays.has(day);
+
+            button.classList.remove('day-locked', 'day-opened');
+
+            if (isOpened) {
+                button.classList.add('day-opened');
+            } else if (!isAvailable) {
+                button.classList.add('day-locked');
+            }
+        });
+    };
+
+    updateProgressUI();
+    updateDayLockState();
+
+    return {
+        openedDays,
+        updateProgressUI,
+        updateDayLockState,
+        save() {
+            localStorage.setItem('openedDays', JSON.stringify(Array.from(openedDays)));
+        }
+    };
+}
+
 // ... Основная логика календаря ...
 document.addEventListener('DOMContentLoaded', () => {
-    // Запускаем праздничные эффекты
     createSnowflakes();
     createChristmasLights();
     
@@ -171,13 +227,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTitle = document.getElementById('modal-title');
     const modalTask = document.getElementById('modal-task');
 
+    const progress = initProgress(calendarDays);
+
     const openTask = (day) => {
         const taskData = tasks[day];
         if (taskData) {
             modalTitle.textContent = taskData.title;
-            // !!! ВАЖНО: Используем innerHTML для поддержки картинок и HTML !!!
             modalTask.innerHTML = taskData.task; 
             modal.style.display = "block";
+
+            const numericDay = parseInt(day);
+            if (!progress.openedDays.has(numericDay)) {
+                progress.openedDays.add(numericDay);
+                progress.save();
+                progress.updateProgressUI();
+                progress.updateDayLockState();
+            }
         } else {
             alert("Задание для этого дня пока не готово! Создатель забыл его добавить. 😉");
         }
@@ -189,12 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentDay = new Date().getDate(); 
             const currentMonth = new Date().getMonth() + 1; 
 
-            // ЛОГИКА ПРОВЕРКИ ДАТЫ: Открывается только если день >= 8 и <= текущему дню
-            if (currentMonth === 12 && parseInt(day) >= 8 && parseInt(day) <= currentDay) {
+            if (currentMonth === 12 && parseInt(day) >= FIRST_DAY && parseInt(day) <= currentDay) {
                 openTask(day);
             } else if (currentMonth !== 12) {
                  alert("Календарь можно будет открывать только в декабре!");
-            } else if (parseInt(day) < 8) {
+            } else if (parseInt(day) < FIRST_DAY) {
                  alert("Этот календарь начинается только с 8 декабря!");
             } else {
                 alert("Это окошко еще закрыто! Придется подождать до " + day + " декабря.");
