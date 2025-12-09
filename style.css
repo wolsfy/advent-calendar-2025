@@ -152,7 +152,9 @@ header p {
 .calendar-day.day-opened::before {
     content: '✅' !important;
     opacity: 0.9 !important;
-    font-size: 0.7em !important;
+    font-size: 0.6em !important;
+    top: 5px !important;
+    right: 5px !important;
 }
 
 .calendar-day.day-locked {
@@ -163,12 +165,10 @@ header p {
 
 .calendar-day.day-locked::before {
     content: '🔒' !important;
-    opacity: 0.9 !important;
-    font-size: 0.7em !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    right: auto !important;
+    opacity: 0.8 !important;
+    font-size: 0.5em !important;
+    top: 5px !important;
+    right: 5px !important;
 }
 
 .calendar-day.day-locked:hover {
