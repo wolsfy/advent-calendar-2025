@@ -146,28 +146,35 @@ header p {
 
 /* Открытые / закрытые дни */
 .calendar-day.day-opened {
-    background: linear-gradient(145deg, #f39c12, #f1c40f);
+    background: linear-gradient(145deg, #f39c12, #f1c40f) !important;
 }
 
 .calendar-day.day-opened::before {
-    content: '✅';
-    opacity: 0.9;
+    content: '✅' !important;
+    opacity: 0.9 !important;
+    font-size: 0.7em !important;
 }
 
 .calendar-day.day-locked {
-    background: linear-gradient(145deg, #7f8c8d, #95a5a6);
-    cursor: not-allowed;
-    opacity: 0.8;
+    background: linear-gradient(145deg, #7f8c8d, #95a5a6) !important;
+    cursor: not-allowed !important;
+    opacity: 0.8 !important;
 }
 
 .calendar-day.day-locked::before {
-    content: '🔒';
-    opacity: 0.9;
+    content: '🔒' !important;
+    opacity: 0.9 !important;
+    font-size: 0.7em !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    right: auto !important;
 }
 
 .calendar-day.day-locked:hover {
-    transform: none;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: none !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+    background: linear-gradient(145deg, #7f8c8d, #95a5a6) !important;
 }
 
 /* Модальное окно */
@@ -344,6 +351,10 @@ header p {
         padding: 15px;
     }
     
+    .calendar-day::before {
+        font-size: 0.5em !important;
+    }
+    
     .modal-content {
         width: 95%;
         margin: 20% auto;
@@ -387,6 +398,10 @@ header p {
         height: 70px;
         font-size: 1.2em;
         padding: 10px;
+    }
+    
+    .calendar-day::before {
+        font-size: 0.45em !important;
     }
     
     .modal-content {
