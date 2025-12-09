@@ -188,17 +188,24 @@ function initProgress(calendarDays) {
         const currentDay = now.getDate();
         const currentMonth = now.getMonth() + 1;
 
+        console.log('Текущая дата:', currentDay, 'декабря');
+
         calendarDays.forEach(button => {
             const day = parseInt(button.getAttribute('data-day'));
             const isAvailable = currentMonth === 12 && day >= FIRST_DAY && day <= currentDay;
             const isOpened = openedDays.has(day);
 
+            // Удаляем все классы состояния
             button.classList.remove('day-locked', 'day-opened');
 
             if (isOpened) {
                 button.classList.add('day-opened');
+                console.log(`День ${day}: открыт`);
             } else if (!isAvailable) {
                 button.classList.add('day-locked');
+                console.log(`День ${day}: заблокирован`);
+            } else {
+                console.log(`День ${day}: доступен`);
             }
         });
     };
