@@ -100,8 +100,71 @@ const tasks = {
     }
 };
 
-// ... Основная логика календаря (остается без изменений) ...
+// ========== ЭФФЕКТ ПАДАЮЩЕГО СНЕГА ==========
+function createSnowflakes() {
+    const snowContainer = document.createElement('div');
+    snowContainer.className = 'snow-container';
+    document.body.appendChild(snowContainer);
+
+    // Создаем 50 снежинок
+    for (let i = 0; i < 50; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.innerHTML = '❄';
+        
+        // Случайные параметры для каждой снежинки
+        const size = Math.random() * 0.8 + 0.5; // от 0.5 до 1.3em
+        const startPosition = Math.random() * 100; // от 0 до 100%
+        const animationDuration = Math.random() * 10 + 10; // от 10 до 20 секунд
+        const animationDelay = Math.random() * 5; // задержка до 5 секунд
+        const opacity = Math.random() * 0.5 + 0.3; // от 0.3 до 0.8
+        
+        snowflake.style.cssText = `
+            left: ${startPosition}%;
+            font-size: ${size}em;
+            animation-duration: ${animationDuration}s;
+            animation-delay: ${animationDelay}s;
+            opacity: ${opacity};
+        `;
+        
+        snowContainer.appendChild(snowflake);
+    }
+}
+
+// ========== ЭФФЕКТ МЕРЦАЮЩЕЙ ГИРЛЯНДЫ ==========
+function createChristmasLights() {
+    const lightsContainer = document.createElement('div');
+    lightsContainer.className = 'lights-container';
+    document.body.appendChild(lightsContainer);
+
+    const colors = ['#ff0000', '#00ff00', '#ffff00', '#0000ff', '#ff00ff', '#00ffff'];
+    
+    // Создаем 20 лампочек
+    for (let i = 0; i < 20; i++) {
+        const light = document.createElement('div');
+        light.className = 'light';
+        
+        const color = colors[i % colors.length];
+        const position = (i / 20) * 100; // равномерно распределяем
+        const animationDelay = Math.random() * 2; // случайная задержка
+        
+        light.style.cssText = `
+            left: ${position}%;
+            background-color: ${color};
+            box-shadow: 0 0 10px ${color}, 0 0 20px ${color};
+            animation-delay: ${animationDelay}s;
+        `;
+        
+        lightsContainer.appendChild(light);
+    }
+}
+
+// ... Основная логика календаря ...
 document.addEventListener('DOMContentLoaded', () => {
+    // Запускаем праздничные эффекты
+    createSnowflakes();
+    createChristmasLights();
+    
     const calendarDays = document.querySelectorAll('.calendar-day');
     const modal = document.getElementById('task-modal');
     const closeButton = document.querySelector('.close-button');
